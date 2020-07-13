@@ -1,0 +1,21 @@
+interface Loopback0
+ ip address 10.255.255.4 255.255.255.255
+!
+interface FastEthernet1/0
+ description connected to P1
+ ip address 10.255.254.6 255.255.255.252
+ duplex full
+ mpls ip
+!
+interface FastEthernet2/0
+ description connected to P3
+ ip address 10.255.254.34 255.255.255.252
+ duplex full
+ mpls ip
+!
+interface FastEthernet3/0
+ description connected to PE4
+ ip address 10.255.254.41 255.255.255.252
+ duplex full
+ mpls ip
+!
