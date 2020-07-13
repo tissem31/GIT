@@ -1,0 +1,8 @@
+config t
+
+hostname CC1
+
+interface FastEthernet0/0
+ ip address 10.254.1.1 255.255.255.0
+ duplex full
+!
