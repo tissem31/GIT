@@ -1,0 +1,23 @@
+config t
+
+hostname CD2
+
+interface FastEthernet0/0
+ no ip address
+ no ip proxy-arp
+ shutdown
+ duplex full
+ pppoe enable group global
+ pppoe-client dial-pool-number 1
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Dialer1
+ mtu 1492
+ ip address negotiated
+ encapsulation ppp
+ dialer pool 1
+!
