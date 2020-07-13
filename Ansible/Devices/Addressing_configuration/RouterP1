@@ -1,0 +1,28 @@
+interface Loopback0
+ ip address 10.255.255.1 255.255.255.255
+ ip ospf network point-to-point
+!
+interface FastEthernet1/0
+ description connected to P4
+ ip address 10.255.254.5 255.255.255.252
+ duplex full
+ mpls ip
+!         
+interface FastEthernet2/0
+ description connected to P2
+ ip address 10.255.254.1 255.255.255.252
+ duplex full
+ mpls ip
+!
+interface FastEthernet3/0
+ description connected to PE4
+ ip address 10.255.254.37 255.255.255.252
+ duplex full
+ mpls ip
+!
+interface FastEthernet4/0
+ description connected to PE1 
+ ip address 10.255.254.9 255.255.255.252
+ duplex full
+ mpls ip
+!
