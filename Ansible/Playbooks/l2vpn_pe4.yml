@@ -1,0 +1,35 @@
+---
+- name: Provision L2VPN ETH2ETH for PE4
+  gather_facts: no
+  hosts: edgep4
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      timeout: 180
+
+    vc_id: '34'
+    pseudowire_class: 'ETH-to-ETH'
+    ip_add: '10.255.255.13'
+    encapsulation: 'mpls'
+    int_name: GigabitEthernet4
+
+  tasks:
+    - name: Prepare Configuration
+      ios_config:
+         authorize: yes
+         lines:
+           - pseudowire-class {{ pseudowire_class }}
+           - encapsulation {{ encapsulation }}
+         match: exact
+
+    - name: Create configure L2VPN
+      ios_config:
+         authorize: yes
+         lines:
+           - no keepalive
+           - xconnect {{ ip_add}} {{ vc_id }} encapsulation {{ encapsulation }} pw-class {{ pseudowire_class }}
+           - no shutdown
+         parents: ['interface {{ int_name }}']
+         match: exact

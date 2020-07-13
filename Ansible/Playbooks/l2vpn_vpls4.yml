@@ -1,0 +1,51 @@
+---
+- name: Provision L2VPN VPLS for PE4
+  gather_facts: no
+  hosts: edgep4
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+
+    vc_id: 101
+    context: MP2MP_VPLS
+    ip_add: 10.255.255.13
+    encapsulation: mpls
+    int_name: GigabitEthernet5
+
+  tasks:
+    - name: Configure Physical Interface
+      ios_config:
+        authorize: yes
+        lines:
+          - service instance {{ vc_id }} ethernet
+          #- encapsulation dot1q {{ vc_id }}
+        parents: ['interface {{ int_name }}']
+
+    - name: Configure Pseudowire Interface
+      ios_config:
+        authorize: yes
+        lines:
+          - encapsulation {{ encapsulation }}
+          - neighbor {{ ip_add }} {{ vc_id }}34
+        parents: ['interface pseudowire {{ vc_id }}34']
+        match: exact
+
+    - name: Configre l2vpn vfi
+      ios_config:
+        authorize: yes
+        lines:
+          - vpn id {{ vc_id }}
+          - member pseudowire {{ vc_id }}34
+        parents: ['l2vpn vfi context {{ context }}']
+        match: exact
+
+    - name: Configure Bridge_domaine
+      ios_config:
+        authorize: yes
+        lines:
+          - member {{ int_name }} service-instance {{ vc_id }}
+          - member vfi {{ context }}
+        parents: ['bridge-domain {{ vc_id }}']
+        match: exact

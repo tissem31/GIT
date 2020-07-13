@@ -1,0 +1,33 @@
+---
+- name: Provision L2VPN P2P for PE1
+  gather_facts: no
+  hosts: edgep1
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+
+    vc_id: 12
+    pseudowire_class: POINT-to-POINT
+    ip_add: 10.255.255.12
+    encapsulation: mpls
+    int_name: GigabitEthernet6
+
+  tasks:
+    - name: Prepare Configuration
+      ios_config:
+        authorize: yes
+        lines:
+          - pseudowire-class {{ pseudowire_class }}
+          - encapsulation {{ encapsulation }}
+        match: exact
+
+    - name: Create configure L2VPN
+      ios_config:
+         authorize: yes
+         lines:
+           - xconnect {{ ip_add}} {{ vc_id }} encapsulation {{ encapsulation }} pw-class {{ pseudowire_class }}
+           - no shutdown
+         parents: ['interface {{ int_name }}']
+         match: exact
