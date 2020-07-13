@@ -1,0 +1,23 @@
+config t
+hostname CA2
+
+interface Loopback0
+ ip address 10.255.11.10 255.255.255.255
+!
+interface Loopback1
+ ip address 10.255.11.11 255.255.255.255
+!
+interface FastEthernet0/0
+ ip address 10.255.11.2 255.255.255.252
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+router ospf 2
+ network 10.255.11.0 0.0.0.3 area 10
+ network 10.255.11.11 0.0.0.0 area 10
+ default-information originate always
+!

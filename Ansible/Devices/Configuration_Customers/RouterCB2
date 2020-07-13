@@ -1,0 +1,25 @@
+config t
+hostname CB2
+
+interface Loopback0
+ ip address 10.255.21.10 255.255.255.255
+!
+interface Loopback1
+ ip address 10.255.21.11 255.255.255.255
+!
+interface FastEthernet0/0
+ ip address 10.255.21.2 255.255.255.252
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+!
+router eigrp 200
+ network 10.255.21.0 0.0.0.3
+ network 10.255.21.10 0.0.0.0
+ network 10.255.21.11 0.0.0.0
+ redistribute connected
+!
