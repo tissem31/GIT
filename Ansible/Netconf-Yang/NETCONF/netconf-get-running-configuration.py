@@ -1,4 +1,5 @@
 from ncclient import manager
+import xml.dom.minidom
 
 # IOS XE Settings
 ios_xe_host = "10.10.0.20"
@@ -14,8 +15,8 @@ m = manager.connect(
     hostkey_verify=False,
     look_for_keys=False
 )
+netconf_reply = m.get_config("running")
 
-for capability in m.server_capabilities:
-    print(capability)
+print(xml.dom.minidom.parseString(netconf_reply.xml).toprettyxml())
 
 m.close_session()
