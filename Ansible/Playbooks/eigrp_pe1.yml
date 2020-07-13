@@ -1,0 +1,62 @@
+---
+- name: Provision EIGRP for PE1
+  gather_facts: no
+  hosts: edgep1
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+
+    bgp_as_number: 64512
+    eigrp_id: 200
+    network_prefix: '10.255.20.0'
+    wild_card_mask: '0.0.0.3'
+    vrf_name: TWO
+    metric: '1500 100 255 1 1500'
+    rd_id: '10.255.255.30:2'
+    rt_imp: '10.255.255.30:2'
+    rt_exp: '10.255.255.31:2'
+    int_name: GigabitEthernet5
+    ip_add: '10.255.20.1 255.255.255.252'
+
+  tasks:
+    - name: Create VRF TWO
+      ios_config:
+        authorize: yes
+        lines:
+          - rd {{ rd_id }}
+          - route-target import {{ rt_imp }}
+          - route-target export {{ rt_exp }}
+        parents: ['ip vrf {{ vrf_name }}']
+        match: exact
+
+    - name: Attach VRF TWO to Interface
+      ios_config:
+        authorize: yes
+        lines:
+          - ip vrf forwarding {{ vrf_name }}
+          - no shutdown
+          - ip address {{ ip_add }}
+        parents: ['interface {{ int_name }}']
+        match: exact
+
+    - name: Create configure EIGRP
+      ios_config:
+         authorize: yes
+         lines:
+           - address-family ipv4 vrf {{ vrf_name }}
+           - redistribute bgp {{ bgp_as_number }} metric {{ metric }}
+           - network {{ network_prefix }} {{ wild_card_mask }}
+           - autonomous-system {{ eigrp_id }}
+         parents: ['router eigrp {{ eigrp_id }}']
+         match: exact
+
+    - name: Create redistribute EIGRP on BGP
+      ios_config:
+         authorize: yes
+         lines:
+           - address-family ipv4 vrf {{ vrf_name }}
+           - redistribute eigrp {{ eigrp_id }}
+         parents: ['router bgp {{ bgp_as_number }}']
+         #match: exact

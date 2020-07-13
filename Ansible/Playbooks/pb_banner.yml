@@ -1,0 +1,10 @@
+---
+- hosts: network
+  vars_files:
+    - /etc/ansible/group_vars/ios.yml
+  tasks:
+    - name: Setting the motd banner on routers
+      ios_banner:
+       banner: motd
+       text: THIS IS FROM MY ANSIBLE PLAYBOOK
+       state: present

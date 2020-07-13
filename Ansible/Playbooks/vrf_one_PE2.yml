@@ -1,0 +1,38 @@
+---
+- name: Provision VRF ONE
+  gather_facts: no
+  hosts: edgep2
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      timeout: 180
+
+    rd_id: '10.255.255.21:1'
+    rt_imp: '10.255.255.21:1'
+    rt_exp: '10.255.255.20:1'
+    vrf_name: ONE
+    int_name: GigabitEthernet5
+    ip_add: '10.255.11.1 255.255.255.252'
+
+  tasks:
+    - name: Create VRF ONE
+      ios_config:
+        authorize: yes
+        lines:
+          - rd {{ rd_id }}
+          - route-target export {{ rt_exp }}
+          - route-target import {{ rt_imp }}
+        parents: ['ip vrf {{ vrf_name }}']
+        match: exact
+
+    - name: Attach VRF ONE to Interface
+      ios_config:
+        authorize: yes
+        lines:
+          - ip vrf forwarding {{ vrf_name }}
+          - no shutdown
+          - ip address {{ ip_add }}
+        parents: ['interface {{ int_name }}']
+        match: exact
