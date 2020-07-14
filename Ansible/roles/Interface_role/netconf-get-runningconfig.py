@@ -2,7 +2,7 @@
 from ncclient import manager
 
 m = manager.connect(host='10.10.0.15', port=830, username='admin',
-                    password='123', device_params={'name': 'test'})
+                    password='123', hostkey_verify='False', look_for_keys='False')
 
 # Create a configuration filter
 interface_filter = '''
