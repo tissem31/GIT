@@ -1,0 +1,24 @@
+<config>
+  <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+<ip>
+	<vrf>
+		<VRFName>{{ VRF_NAME }}</VRFName>
+		<ConfigVrf-Configuration>
+			<rd>
+				<ASNNnIPAddressNn4BASNNn>{{ AS_RD }}</ASNNnIPAddressNn4BASNNn>
+			</rd>
+			<route-target>
+				<export>
+					<TargetVPNExtendedCommunity>{{ RD_Exp }}</TargetVPNExtendedCommunity>
+				</export>
+			</route-target>
+			<route-target>
+				<import>
+					<TargetVPNExtendedCommunity>{{ RD_Imp }}</TargetVPNExtendedCommunity>
+				</import>
+			</route-target>
+		</ConfigVrf-Configuration>
+	</vrf>
+</ip>
+  </native>
+</config>
