@@ -1,1 +1,54 @@
-
+<config>
+	<native  xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+		<router>
+			<bgp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp">
+				<id> {{ AS }}</id>
+				<ConfigRouter-Configuration>
+					<bgp>
+						<log-neighbor-changes/>
+					</bgp>
+					<neighbor>
+						<NeighborAddress>{{ ADD_LOOPBACK }}</NeighborAddress>
+						<remote-as>
+							<ASRemoteNeighbor>{{ AS }}</ASRemoteNeighbor>
+						</remote-as>
+					</neighbor>
+					<neighbor>
+						<NeighborAddress>{{ ADD_LOOPBACK }}</NeighborAddress>
+						<update-source>
+							<Param>{{ INT_LOOPBACK }}</Param>
+						</update-source>
+					</neighbor>
+					<address-family>
+						<ipv4>
+							<ConfigRouterAf-Configuration>
+								<neighbor>
+									<NeighborAddress>{{ ADD_LOOPBACK }}</NeighborAddress>
+									<activate/>
+								</neighbor>
+								<exit-address-family></exit-address-family>
+							</ConfigRouterAf-Configuration>
+						</ipv4>
+					</address-family>
+					<address-family>
+						<vpnv4>
+							<ConfigRouterAf-Configuration>
+								<neighbor>
+									<NeighborAddress>{{ ADD_LOOPBACK }}</NeighborAddress>
+									<activate/>
+								</neighbor>
+								<neighbor>
+									<NeighborAddress>{{ ADD_LOOPBACK }}</NeighborAddress>
+									<send-community>
+										<extended> {{ COMMUNITY }} </extended>
+									</send-community>
+								</neighbor>
+								<exit-address-family></exit-address-family>
+							</ConfigRouterAf-Configuration>
+						</vpnv4>
+					</address-family>
+				</ConfigRouter-Configuration>
+			</bgp>
+		</router>
+	</native>
+</config>
