@@ -1,1 +1,14 @@
+<pseudowire-class><PseudowireClassName>ETH-to-ETH</PseudowireClassName>
+<ConfigPwClass-Configuration>
+<encapsulation><mpls/></encapsulation>
+</ConfigPwClass-Configuration>
+</pseudowire-class>
 
+<interface><Param>GigabitEthernet3</Param>
+<ConfigIf-Configuration>
+<ip operation="delete" ><address/></ip>
+<negotiation><auto/></negotiation>
+<keepalive operation="delete" ></keepalive>
+<mop operation="delete" ><enabled/></mop>
+<mop operation="delete" ><sysid/></mop>
+<xconnect><IPAddressPeer>10.255.255.14</IPAddressPeer><EnterVCIDValue>34</EnterVCIDValue><encapsulation><mpls><pw-class><PseudowireClassName>ETH-to-ETH</PseudowireClassName>
