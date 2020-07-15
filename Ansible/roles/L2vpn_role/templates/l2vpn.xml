@@ -1,1 +1,28 @@
-
+<config>
+	<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-l2vpn">
+		<interface>
+			<GigabitEthernet>
+				<name xmlns:nc='urn:ietf:params:xml:ns:netconf:base:1.0'>{{ INT }}</name>
+				<ConfigIf-Configuration>
+					<mop>
+						<enabled>false</enabled>
+						<sysid>false</sysid>
+					</mop>
+					<negotiation xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ethernet">
+						<auto>true</auto>
+					</negotiation>
+					<xconnect>
+						<IPAddressPeer>{{ IP_ADD }}</IPAddressPeer>
+						<EnterVCIDValue>{{ VCID }}</EnterVCIDValue>
+						<encapsulation>
+							<mpls>{{ ENCAPSULATION }}</mpls>
+						</encapsulation>
+						<pw-class>
+							<PseudowireClassName>{{ PSEUDOWIRE }}</PseudowireClassName>
+						</pw-class>
+					</xconnect>
+				</ConfigIf-Configuration>
+			</GigabitEthernet>
+		</interface>
+	</native>
+</config>
