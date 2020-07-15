@@ -1,1 +1,71 @@
+#redistribute BGP on OSPF
+<config>
+	<native
+		xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+		<router>
+			<ospf
+				xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf">
+				<ConfigRouter-Configuration>
+					<redistribute>
+						<bgp>
+							<subnets/>
+						</bgp>
+					</redistribute>
+					<network>
+						<NetworkNumber>{{ NET_ADD }}</NetworkNumber>
+						<OSPFWildCardBits>{{ WILD_CARD_MASK }}</OSPFWildCardBits>
+						<area>
+							<OSPFAreaIDAsDecimalValue>{{ AREA_NUMBER }}</OSPFAreaIDAsDecimalValue>
+						</area>
+					</network>
+				</ConfigRouter-Configuration>
+			</ospf>
+		</router>
+	</native></config>
 
+#redistribute OSPF on BGP ---->mpbgp.xml
+
+
+	<config>
+		<native
+			xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+			<router>
+				<bgp
+					xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp">
+					<autonomous-system>
+						<AutonomousSystem>{{ AS }}</AutonomousSystem>
+					</autonomous-system>
+					<address-family>
+						<ipv4>
+							<vrf>
+								<VPNRoutingForwardingInstanceName>{{ VRF_NAME_1 }}</VPNRoutingForwardingInstanceName>
+								<ConfigRouterAf-Configuration>
+									<redistribute>
+										<ospf>
+											<id>{{ PROCESS_ID }}</id>
+										</ospf>
+									</redistribute>
+									<exit-address-family></exit-address-family>
+								</ConfigRouterAf-Configuration>
+							</vrf>
+						</ipv4>
+					</address-family>
+					<address-family>
+						<ipv4>
+							<vrf>
+								<VPNRoutingForwardingInstanceName>{{ VRF_NAME_2 }}</VPNRoutingForwardingInstanceName>
+								<ConfigRouterAf-Configuration>
+									<redistribute>
+										<eigrp>
+											<ASNumber>{{ AS_NUMBER }}</ASNumber>
+										</eigrp>
+									</redistribute>
+									<exit-address-family></exit-address-family>
+								</ConfigRouterAf-Configuration>
+							</vrf>
+						</ipv4>
+					</address-family>
+				</bgp>
+			</router>
+		</native>
+	</config>
