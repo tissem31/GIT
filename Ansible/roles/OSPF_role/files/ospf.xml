@@ -1,1 +1,23 @@
+#redistribute BGP on OSPF
+<router><ospf>
+<ConfigRouter-Configuration>
+<redistribute><bgp><subnets/></bgp></redistribute>
+<network><NetworkNumber>10.255.10.0</NetworkNumber><OSPFWildCardBits>0.0.0.3</OSPFWildCardBits><area><OSPFAreaIDAsDecimalValue>10</OSPFAreaIDAsDecimalValue></area></network>
+</ConfigRouter-Configuration>
+</ospf>
+</router>
 
+
+#redistribute OSPF on BGP
+<router><bgp> 
+<autonomous-system><AutonomousSystem>64512</AutonomousSystem></autonomous-system>
+<address-family><ipv4><vrf><VPNRoutingForwardingInstanceName>ONE</VPNRoutingForwardingInstanceName>
+<ConfigRouterAf-Configuration>
+<redistribute><ospf/></redistribute>
+<exit-address-family></exit-address-family>
+</ConfigRouterAf-Configuration>
+</vrf>
+</ipv4>
+</address-family>
+</bgp>
+</router>
