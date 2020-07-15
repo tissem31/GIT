@@ -1,1 +1,73 @@
+#redistribute BGP on EIGRP
+<config>
+	<native
+		xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+		<router>
+			<eigrp
+				xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-eigrp">
+				<AutonomousSystem>{{ AS_eigrp }}</AutonomousSystem>
+				<ConfigRouter-Configuration>
+					<address-family>
+						<ipv4>
+							<vrf>
+								<VirtualRoutingForwardingInstanceName>{{ VRF_NAME_2 }}</VirtualRoutingForwardingInstanceName>
+								<ConfigRouterAf-Configuration>
+									<redistribute>
+										<bgp>
+											<metric>
+												<BandwidthMetricKbitsPerSecond>{{ BW }}</BandwidthMetricKbitsPerSecond>
+												<EIGRPDelayMetric10MicrosecondUnits>{{ Delay }}</EIGRPDelayMetric10MicrosecondUnits>
+												<EIGRPReliabilityMetricReliable>{{ RELIABILITY }}</EIGRPReliabilityMetricReliable>
+												<EIGRPEffectiveBandwidthMetricLoadingLoaded>{{ LOAD }}</EIGRPEffectiveBandwidthMetricLoadingLoaded>
+												<EIGRPMTUPath>{{ MTU }}</EIGRPMTUPath>
+											</metric>
+										</bgp>
+									</redistribute>
+									<network>
+										<NetworkNumber>{{ NET_ADD }}</NetworkNumber>
+										<EIGRPWildCardBits>{{ WILD_CARD_MASK }}</EIGRPWildCardBits>
+									</network>
+									<autonomous-system>
+										<AutonomousSystem>{{ AS_eigrp }}</AutonomousSystem>
+									</autonomous-system>
+									<exit-address-family></exit-address-family>
+								</ConfigRouterAf-Configuration>
+							</vrf>
+						</ipv4>
+					</address-family>
+				</ConfigRouter-Configuration>
+			</eigrp>
+		</router>
+	</native>
+</config>
 
+
+
+
+#redistribute EIGRP on BGP
+<config>
+	<native
+		xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+		<router>
+			<bgp
+				xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp">
+				<autonomous-system>
+					<AutonomousSystem>{{ AS_bgp }}</AutonomousSystem>
+				</autonomous-system>
+				<address-family>
+					<ipv4>
+						<vrf>
+							<VPNRoutingForwardingInstanceName>{{ VRF_NAME_2 }}</VPNRoutingForwardingInstanceName>
+							<ConfigRouterAf-Configuration>
+								<redistribute>
+									<eigrp>
+										<ASNumber>{{ AS_eigrp }}</ASNumber>
+									</eigrp>
+								</redistribute>
+								<exit-address-family></exit-address-family>
+							</ConfigRouterAf-Configuration>
+						</vrf>
+					</ipv4>
+				</address-family>
+    </native>
+</config>
