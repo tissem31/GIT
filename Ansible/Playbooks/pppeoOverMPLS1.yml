@@ -1,0 +1,47 @@
+---
+- name: Provision PPPoE Over MPLS for PE1 
+  gather_facts: no
+  hosts: edgep1
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+
+    Group_NAME: 'MyGroup'
+    IP_ADD_server: '10.254.2.3 255.255.255.0'
+    IP_ADD_client:  '10.254.2.4'
+    NUMBER_VI: '1'
+    POOL_NAME: 'MyPool'
+    Int_NAME: 'GigabitEthernet7'
+
+  tasks:
+    - name: Configure groupe Broadband Aggregation
+      ios_config:
+         authorize: yes
+         lines:
+           - virtual-template 1
+           - sessions per-mac limit 2
+         parents: ['bba-group pppoe {{ Group_NAME }}']
+         match: exact
+
+    - name: Configure Interface virtual-template
+      ios_config:
+         authorize: yes
+         lines:
+           - ip address {{ IP_ADD_server }} 
+           - peer default ip address pool {{ POOL_NAME }}
+           - exit-interface
+           - ip local pool {{ POOL_NAME }} {{ IP_ADD_client }}
+         parents: ['interface virtual-template {{ NUMBER_VI }}']
+         match: exact
+
+    - name: Enable PPPoE on Interface
+      ios_config:
+         authorize: yes
+         lines:
+           - no ip address
+           - pppoe enable group {{ Group_NAME }}
+           - no shutdown
+         parents: ['interface {{ Int_NAME }}']
+         match: exact

@@ -1,0 +1,25 @@
+---
+- name: Provision L2VPN for PE3
+  gather_facts: no
+  hosts: edgep3
+  vars:
+    credentials:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      int_name: FastEthernet2/0
+
+    vc_id: 34 
+    pseudowire_class: ETH-to-ETH
+    ip_add: 10.255.255.13
+    encapsulation: mpls
+    
+  tasks:
+    - name: Create configure L2VPN
+      ios_config:
+         authorize: yes
+         lines:
+           - x-connect {{ ip_add}} encapsulation {{ encapsulation }} mpls ps-class {{ pseudowire_class }}
+           - no shutdown
+         parents: ['interface {{ int_name }}']
+         match: exact
