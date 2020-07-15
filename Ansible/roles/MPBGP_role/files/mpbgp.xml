@@ -1,1 +1,54 @@
+<router>
+	<bgp>
+		<ConfigRouter-Configuration>
+			<bgp>
+				<log-neighbor-changes/>
+			</bgp>
+			<neighbor>
+				<NeighborAddress>10.255.255.12</NeighborAddress>
+				<remote-as>
+					<ASRemoteNeighbor>64512</ASRemoteNeighbor>
+				</remote-as>
+			</neighbor>
+			<neighbor>
+				<NeighborAddress>10.255.255.12</NeighborAddress>
+				<update-source>
+					<Param>Loopback0</Param>
+				</update-source>
+			</neighbor>
+			<address-family>
+				<ipv4>
+					<ConfigRouterAf-Configuration>
+						<neighbor>
+							<NeighborAddress>10.255.255.12</NeighborAddress>
+							<activate/>
+						</neighbor>
+						<exit-address-family></exit-address-family>
+					</ConfigRouterAf-Configuration>
+				</ipv4>
+			</address-family>
+			<address-family>
+				<vpnv4>
+					<ConfigRouterAf-Configuration>
+						<neighbor>
+							<NeighborAddress>10.255.255.12</NeighborAddress>
+							<activate/>
+						</neighbor>
+						<neighbor>
+							<NeighborAddress>10.255.255.12</NeighborAddress>
+							<send-community>
+								<extended/>
+							</send-community>
+						</neighbor>
+						<exit-address-family></exit-address-family>
+					</ConfigRouterAf-Configuration>
+				</vpnv4>
+			</address-family>
+		</ConfigRouter-Configuration>
+	</bgp>
+</router>
+
+
+
+
 
