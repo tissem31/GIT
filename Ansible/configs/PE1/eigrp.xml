@@ -1,0 +1,34 @@
+<config>
+  <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <router>
+        <eigrp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-eigrp">
+           <id>200</id>
+               <address-family>
+                  <type>ipv4</type>
+                  <af-ip-vrf-list>
+                     <vrf>TWO</vrf>
+                     <set-as-in-submode>
+                        <autonomous-system>200</autonomous-system>
+                     </set-as-in-submode>
+                     <network>
+                        <number>10.255.20.0</number>
+                        <wild-card>0.0.0.3</wild-card>
+                     </network>
+                     <redistribute>
+                        <bgp>
+                           <rdr-as>64512</rdr-as>
+                           <metric>
+                              <bandwith>1500</bandwith>
+                              <delay>100</delay>
+                              <reliability>255</reliability>
+                              <Effective>1</Effective>
+                              <mtu>1500</mtu>
+                           </metric>
+                        </bgp>
+                    </redistribute>
+                </af-ip-vrf-list>
+            </address-family>
+        </eigrp>
+    </router>
+  </native>
+</config>
