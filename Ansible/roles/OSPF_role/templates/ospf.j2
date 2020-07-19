@@ -1,0 +1,27 @@
+<config>
+  <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <router>
+    {% if ospfs is defined %}
+      {% for ospf in ospfs %}
+        <ospf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf">
+          <id> {{ ospf["id"] }} </id>
+          <vrf>{{ ospf["vrf"] }}</vrf>
+          <redistribute>
+            <bgp>
+              <as-number>{{ ospf["bgp-as"] }}</as-number>
+              <redist-options>
+                <subnets />
+              </redist-options>
+            </bgp>
+          </redistribute>
+          <network>
+            <ip>{{ ospf["network"] }}</ip>
+            <mask>{{ ospf["mask"] }}</mask>
+            <area>{{ ospf["area"] }}</area>
+          </network>
+        </ospf>
+      {% endfor %}
+    {% endif %}
+    </router>
+  </native>
+</config>
