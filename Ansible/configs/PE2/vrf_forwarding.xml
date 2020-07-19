@@ -1,0 +1,54 @@
+#jinja2: lstrip_blocks: "true"
+<config>
+  <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <interfaces >
+        <GigabitEthernet>
+        <name>4</name>
+        <ip>
+            <vrf>
+                <forwarding>
+                    <word>ONE</word>
+                </forwarding>
+            </vrf>
+            <address>
+                <primary>
+                    <address>10.255.11.1</address>
+                    <mask>255.255.255.252</mask>
+                </primary>
+            </address>
+        </ip>
+        <mop>
+            <enabled>false</enabled>
+            <sysid>false</sysid>
+        </mop>
+        <negotiation xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ethernet">
+        <auto>true</auto>
+        </negotiation>
+        </GigabitEthernet>
+        <GigabitEthernet>
+            <name>5</name>
+            <ip>
+                <vrf>
+                    <forwarding>
+                        <word>TWO</word>
+                    </forwarding>
+                </vrf>
+                <address>
+                    <primary>
+                        <address>10.255.21.1</address>
+                        <mask>255.255.255.25</mask>
+                    </primary>
+                </address>
+            </ip>
+            <mop>
+                <enabled>false</enabled>
+                <sysid>false</sysid>
+            </mop>
+            <negotiation xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ethernet">
+            <auto>true</auto>
+            </negotiation>
+        </GigabitEthernet>
+    </interfaces>
+
+  </native>
+</config>

@@ -1,0 +1,50 @@
+<config>
+	<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+		<interface>
+			<GigabitEthernet>
+				<name>2</name>
+				<description>connected to P3</description>
+				<ip>
+					<address>
+						<primary>
+							<address>10.255.254.30</address>
+							<mask>255.255.255.252</mask>
+						</primary>
+					</address>
+				</ip>
+				<shutdown xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0" nc:operation="delete"/>
+					<negotiation xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ethernet">
+						<auto>true</auto>
+					</negotiation>
+				</GigabitEthernet>
+				<GigabitEthernet>
+					<name>3</name>
+					<description>connected to P2</description>
+					<ip>
+						<address>
+							<primary>
+								<address>10.255.254.22</address>
+								<mask>255.255.255.252</mask>
+							</primary>
+						</address>
+					</ip>
+					<shutdown xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0" nc:operation="delete"/>
+						<negotiation
+							xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-ethernet">
+							<auto>true</auto>
+						</negotiation>
+					</GigabitEthernet>
+					<Loopback>
+						<name>0</name>
+						<ip>
+							<address>
+								<primary>
+									<address>10.255.255.12</address>
+									<mask>255.255.255.255</mask>
+								</primary>
+							</address>
+						</ip>
+					</Loopback>
+				</interface>
+			</native>
+		</config>
