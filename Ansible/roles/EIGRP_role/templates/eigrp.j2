@@ -1,0 +1,80 @@
+<config>
+	<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+		<router>
+		 {% for eigrp in eigrps %}
+			<eigrp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-eigrp">
+				<AutonomousSystem>{{ AS_eigrp }}</AutonomousSystem>
+				<ConfigRouter-Configuration>
+					<address-family>
+						<ipv4>
+							<vrf>
+								<VirtualRoutingForwardingInstanceName>{{ VRF_NAME_2 }}</VirtualRoutingForwardingInstanceName>
+								<ConfigRouterAf-Configuration>
+									<redistribute>
+										<bgp>
+											<metric>
+												<BandwidthMetricKbitsPerSecond>{{ BW }}</BandwidthMetricKbitsPerSecond>
+												<EIGRPDelayMetric10MicrosecondUnits>{{ Delay }}</EIGRPDelayMetric10MicrosecondUnits>
+												<EIGRPReliabilityMetricReliable>{{ RELIABILITY }}</EIGRPReliabilityMetricReliable>
+												<EIGRPEffectiveBandwidthMetricLoadingLoaded>{{ LOAD }}</EIGRPEffectiveBandwidthMetricLoadingLoaded>
+												<EIGRPMTUPath>{{ MTU }}</EIGRPMTUPath>
+											</metric>
+										</bgp>
+									</redistribute>
+									<network>
+										<NetworkNumber>{{ NET_ADD }}</NetworkNumber>
+										<EIGRPWildCardBits>{{ WILD_CARD_MASK }}</EIGRPWildCardBits>
+									</network>
+									<autonomous-system>
+										<AutonomousSystem>{{ AS_eigrp }}</AutonomousSystem>
+									</autonomous-system>
+									<exit-address-family></exit-address-family>
+								</ConfigRouterAf-Configuration>
+							</vrf>
+						</ipv4>
+					</address-family>
+				</ConfigRouter-Configuration>
+			</eigrp>
+		</router>
+		{% endfor %}
+	</native>
+</config>
+***************************************************************************************************
+<config>
+  <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <router>
+    {% if eigrps is defined %}
+      {% for eigrp in eigrps %}
+        <eigrp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-eigrp">
+          <id> {{ eigrp["id"] }} </id>
+          <address-family>
+            <type>ipv4</type>
+              <af-ip-vrf-list>
+                  <vrf>{{ eigrp["vrf"] }}</vrf>
+                    <set-as-in-submode>
+                      <autonomous-system>200</autonomous-system>
+                    </set-as-in-submode>
+                    <network>
+                      <number>{{ eigrp["network"] }}</number>
+                        <wild-card>{{ eigrp["mask"] }}</wild-card>
+                    </network>
+                     <redistribute>
+                        <bgp>
+                           <rdr-as>{{ eigrp["bgp-as"] }}</rdr-as>
+                           <metric>
+                              <bandwith>1500</bandwith>
+                              <delay>100</delay>
+                              <reliability>255</reliability>
+                              <Effective>1</Effective>
+                              <mtu>1500</mtu>
+                           </metric>
+                        </bgp>
+                    </redistribute>
+                </af-ip-vrf-list>
+            </address-family>
+        </eigrp>
+      {% endfor %}
+    {% endif %}
+    </router>
+  </native>
+</config>
