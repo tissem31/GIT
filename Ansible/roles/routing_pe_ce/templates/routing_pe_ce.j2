@@ -1,1 +1,40 @@
+<config>
+  <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+    <router>
+        <bgp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp">
+            <id>64512</id>
+            <bgp>
+                <log-neighbor-changes>true</log-neighbor-changes>
+            </bgp>
 
+            <address-family>
+                <with-vrf>
+                    <ipv4>
+                        <af-name>unicast</af-name>
+                        {% if customers is defined %}
+                        {% for customer in customers%}
+                        <vrf>
+                            <name>{{ customer["name"] }}</name>
+                            <ipv4-unicast>
+                                <redistribute>
+                                    {% if customer["redistribute"]=="ospf" %}
+                                    <ospf>
+                                        <id>{{customer["ospf-id"]}}</id>
+                                    </ospf>
+                                    {% elif customer["redistribute"]=="eigrp" %}
+                                    <eigrp>
+                                        <as-no>{{customer["eigrp-id"]}}</as-no>
+                                    </eigrp>
+                                    {% endif%}
+                                </redistribute>
+                            </ipv4-unicast>
+                        </vrf>
+                        {% endfor %}
+                        {% endif %}
+                    </ipv4>
+                </with-vrf>
+            </address-family>
+        </bgp>
+    </router>
+  </native>
+</config>
