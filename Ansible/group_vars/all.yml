@@ -1,1 +1,20 @@
+---
+provider:
+  host: "{{ ansible_host }}"
+  username: "{{ ansible_user }}"
+  password: "{{ ansible_ssh_pass }}"
+enable_secret: C1sco123
+local_auth_accounts:
+  - username: admin
+    password: 123
+    privilege_level: 15
+configs_dir: "configs"
+ansible_connection: netconf
 
+ansible_network_plateform:
+  - ansible_network_os:
+    plateform: cisco
+    name: ios
+
+pseudowire:
+  encapsultation: mpls
